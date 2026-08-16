@@ -4,8 +4,6 @@
 #include <U8g2lib.h>  // u8g2 library is used for drawing graphics on the display
 #include <SPI.h>
 
-#include "images.h"  // this file includes generated c-style arrays for all the screenshots (images generated using https://javl.github.io/image2cpp/)
-
 /********** BOARD PIN STUFF ***********/
 // ARD    | LCD  | Color
 // -------+------+----------------------
