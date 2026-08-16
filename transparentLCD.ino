@@ -36,7 +36,7 @@ void setup(void) {
 void drawFrame(int frameToDraw) {
   static int val = 0;
   if(Serial.available()) val = Serial.read();
-  u8g2.drawStr(15, 15, String(val * 347).c_str());
+  u8g2.drawStr(15, 15, String(val).c_str());
   Serial.println(val);
 }
 
