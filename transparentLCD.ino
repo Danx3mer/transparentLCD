@@ -3,6 +3,8 @@
 #include <Arduino.h>
 #include <U8g2lib.h>  // u8g2 library is used for drawing graphics on the display
 #include <SPI.h>
+#include <Wire.h> // For I2C
+#include <math.h>
 
 /********** BOARD PIN STUFF ***********/
 // ARD    | LCD  | Color
@@ -26,16 +28,27 @@ constexpr unsigned short refreshRateMS = 50;
 
 void setup(void) {
   Serial.begin(9600);
+  Wire.begin(5);   // Begin I2C transmission as slave 5
+  Wire.onReceive(updateVal);
   u8g2.begin();  // begin function is required for u8g2
   u8g2.setFont(u8g2_font_6x10_tf);
   u8g2.setFontRefHeightAll();  	/* this will add some extra space for the text inside the buttons */
   u8g2.setDisplayRotation(U8G2_R0);
 }
 
+int val = 0;
+
+void updateVal() {
+  val = 0;
+  // Read sequence 1 byte at a time
+  while(Wire.available()) {
+    val *= 1 << 8;
+    val += Wire.read();
+  }
+}
+
 // Main drawing loop
 void drawFrame(int frameToDraw) {
-  static int val = 0;
-  if(Serial.available()) val = Serial.read();
   u8g2.drawStr(15, 15, String(val).c_str());
   Serial.println(val);
 }
